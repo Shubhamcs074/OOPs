@@ -318,3 +318,115 @@ The correct sound method is invoked at runtime based on the actual type of the o
 
 ***2. Compile-Time Polymorphism:*** Python does not natively support method overloading. Instead, we use a single method (add) with default arguments to handle varying numbers of parameters.
 Different behaviors (adding two or three numbers) are achieved based on how the method is called.
+
+---
+
+### Python Encapsulation
+
+Encapsulation is the bundling of data (attributes) and methods (functions) within a class, restricting access to some components to control interactions.
+
+A class is an example of encapsulation as it encapsulates all the data that is member functions, variables, etc.
+
+#### Types of Encapsulation:
+
+***1. Public Members:*** Accessible from anywhere.
+
+***2. Protected Members:*** Accessible within the class and its subclasses.
+ 
+***3. Private Members:*** Accessible only within the class
+
+#### Code Example:
+
+~~~
+
+class Dog:
+    def __init__(self, name, breed, age):
+        self.name = name  # Public attribute
+        self._breed = breed  # Protected attribute
+        self.__age = age  # Private attribute
+
+    # Public method
+    def get_info(self):
+        return f"Name: {self.name}, Breed: {self._breed}, Age: {self.__age}"
+
+    # Getter and Setter for private attribute
+    def get_age(self):
+        return self.__age
+
+    def set_age(self, age):
+        if age > 0:
+            self.__age = age
+        else:
+            print("Invalid age!")
+
+# Example Usage
+dog = Dog("Buddy", "Labrador", 3)
+
+# Accessing public member
+print(dog.name)  # Accessible
+
+# Accessing protected member
+print(dog._breed)  # Accessible but discouraged outside the class
+
+# Accessing private member using getter
+print(dog.get_age())
+
+# Modifying private member using setter
+dog.set_age(5)
+print(dog.get_info())
+~~~
+***Explanation:***
+
+Public Members: Easily accessible, such as name.
+
+Protected Members: Used with a single _, such as _breed. Access is discouraged but allowed in subclasses.
+
+Private Members: Used with __, such as __age. Access requires getter and setter methods.
+
+---
+### Data Abstraction
+
+Abstraction hides the internal implementation details while exposing only the necessary functionality. It helps focus on "what to do" rather than "how to do it."
+
+#### Types of Abstraction:
+
+***Partial Abstraction:*** Abstract class contains both abstract and concrete methods.
+
+***Full Abstraction:*** Abstract class contains only abstract methods (like interfaces).
+---
+
+#### Code Example:
+~~~
+from abc import ABC, abstractmethod
+
+class Dog(ABC):  # Abstract Class
+    def __init__(self, name):
+        self.name = name
+
+    @abstractmethod
+    def sound(self):  # Abstract Method
+        pass
+
+    def display_name(self):  # Concrete Method
+        print(f"Dog's Name: {self.name}")
+
+class Labrador(Dog):  # Partial Abstraction
+    def sound(self):
+        print("Labrador Woof!")
+
+class Beagle(Dog):  # Partial Abstraction
+    def sound(self):
+        print("Beagle Bark!")
+
+# Example Usage
+dogs = [Labrador("Buddy"), Beagle("Charlie")]
+for dog in dogs:
+    dog.display_name()  # Calls concrete method
+    dog.sound()  # Calls implemented abstract method
+~~~
+
+#### Explanation:
+
+***Partial Abstraction:*** The Dog class has both abstract (sound) and concrete (display_name) methods.
+
+***Why Use It:*** Abstraction ensures consistency in derived classes by enforcing the implementation of abstract methods.
